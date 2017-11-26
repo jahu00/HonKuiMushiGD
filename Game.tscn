@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=1]
+[gd_scene load_steps=21 format=1]
 
 [ext_resource path="res://script/Game.gd" type="Script" id=1]
 [ext_resource path="res://gfx/gui/score.png" type="Texture" id=2]
@@ -8,11 +8,9 @@
 [ext_resource path="res://script/FitWidthLabel.gd" type="Script" id=6]
 [ext_resource path="res://font/sigmar-one/SigmarOne.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://script/AnimatedLabel.gd" type="Script" id=8]
-[ext_resource path="res://gfx/gui/button.png" type="Texture" id=9]
-[ext_resource path="res://gfx/gui/button-pressed.png" type="Texture" id=10]
-[ext_resource path="res://script/Button.gd" type="Script" id=11]
-[ext_resource path="res://gfx/gui/progress-bar.png" type="Texture" id=12]
-[ext_resource path="res://script/ProgressBar.gd" type="Script" id=13]
+[ext_resource path="res://GameButton.tscn" type="PackedScene" id=9]
+[ext_resource path="res://gfx/gui/progress-bar.png" type="Texture" id=10]
+[ext_resource path="res://script/ProgressBar.gd" type="Script" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 
@@ -191,77 +189,6 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=10]
-
-length = 0.01
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("Label:custom_colors/font_color")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = {
-"times": FloatArray( 0 ),
-"transitions": FloatArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 0.647059, 0, 1 ) ]
-}
-
-[sub_resource type="Animation" id=11]
-
-length = 2.0
-loop = true
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("Label:custom_colors/font_color")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = {
-"times": FloatArray( 0, 0.5, 1, 1.5, 2 ),
-"transitions": FloatArray( 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 0.647059, 0, 1 ), Color( 0.67451, 1, 0, 1 ), Color( 0, 1, 0, 1 ), Color( 0.67451, 1, 0, 1 ), Color( 1, 0.647059, 0, 1 ) ]
-}
-
-[sub_resource type="Animation" id=12]
-
-length = 2.0
-loop = true
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("Label:custom_colors/font_color")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = {
-"times": FloatArray( 0, 0.5, 1, 1.5, 2 ),
-"transitions": FloatArray( 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 0, 1 ), Color( 0.67451, 1, 0, 1 ), Color( 0, 1, 0, 1 ), Color( 0.67451, 1, 0, 1 ), Color( 1, 1, 0, 1 ) ]
-}
-
-[sub_resource type="Animation" id=13]
-
-length = 0.01
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("Label:custom_colors/font_color")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = {
-"times": FloatArray( 0 ),
-"transitions": FloatArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 0, 1 ) ]
-}
-
-[sub_resource type="DynamicFont" id=14]
-
-font/size = 40
-font/use_mipmaps = false
-font/use_filter = true
-font/font = ExtResource( 7 )
-
 [node name="Game" type="Node"]
 
 script/script = ExtResource( 1 )
@@ -378,80 +305,34 @@ playback/speed = 1.0
 blend_times = [  ]
 autoplay = ""
 
-[node name="SubmitButton" type="TextureButton" parent="SideBar"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = -30.0
-margin/top = 160.0
-margin/right = 410.0
-margin/bottom = 250.0
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-textures/normal = ExtResource( 9 )
-textures/pressed = ExtResource( 10 )
-params/resize_mode = 1
-params/stretch_mode = 0
-script/script = ExtResource( 11 )
-Flashing = false
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="SideBar/SubmitButton"]
-
-playback/process_mode = 1
-playback/default_blend_time = 0.0
-root/root = NodePath("..")
-anims/Default = SubResource( 10 )
-anims/Flashing = SubResource( 11 )
-anims/FlashingHover = SubResource( 12 )
-anims/Hover = SubResource( 13 )
-playback/active = true
-playback/speed = 1.0
-blend_times = [  ]
-autoplay = ""
-
-[node name="Label" type="Label" parent="SideBar/SubmitButton"]
-
-focus/ignore_mouse = true
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 0
-margin/left = 140.0
-margin/top = 10.0
-margin/right = 307.0
-margin/bottom = 76.0
-custom_fonts/font = SubResource( 14 )
-custom_colors/font_color = Color( 1, 0.647059, 0, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/shadow_as_outline = 1
-text = "Submit"
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
+[node name="SubmitButton" parent="SideBar" instance=ExtResource( 9 )]
 
 [node name="ProgressBar" type="Sprite" parent="SideBar"]
 
 transform/pos = Vector2( 190, 310 )
 transform/scale = Vector2( 1.71094, 1.75 )
-texture = ExtResource( 12 )
-script/script = ExtResource( 13 )
+texture = ExtResource( 10 )
+script/script = ExtResource( 11 )
 MinStep = 0.005
 UpdateSpeed = 0.05
+
+[node name="MenuButton" parent="SideBar" instance=ExtResource( 9 )]
+
+margin/top = 840.0
+margin/bottom = 930.0
+
+[node name="Label" parent="SideBar/MenuButton"]
+
+text = "Menu"
 
 [node name="Overlay" type="Node2D" parent="."]
 
 z/z = 1
 
-[connection signal="button_down" from="SideBar/SubmitButton" to="SideBar/SubmitButton" method="_on_SubmitButton_button_down"]
-
-[connection signal="button_up" from="SideBar/SubmitButton" to="SideBar/SubmitButton" method="_on_SubmitButton_button_up"]
-
-[connection signal="mouse_enter" from="SideBar/SubmitButton" to="SideBar/SubmitButton" method="_on_SubmitButton_mouse_enter"]
-
-[connection signal="mouse_exit" from="SideBar/SubmitButton" to="SideBar/SubmitButton" method="_on_SubmitButton_mouse_exit"]
-
 [connection signal="pressed" from="SideBar/SubmitButton" to="." method="_on_SubmitButton_pressed"]
 
+[connection signal="pressed" from="SideBar/MenuButton" to="." method="_on_MenuButton_pressed"]
 
+
+[editable path="SideBar/SubmitButton"]
+[editable path="SideBar/MenuButton"]

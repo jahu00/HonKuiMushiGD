@@ -24,7 +24,7 @@ var bonus_tiles_to_insert = []
 var bonus_tile_index = {}
 var tile_add_index = 0
 
-var language_key
+#var language_key
 
 var alphabet
 var dictionary
@@ -57,6 +57,8 @@ var alphabets
 var settings
 var fonts
 
+var load_data
+
 func _ready():
 	tile_size = Globals.get("TileSize")
 	
@@ -81,6 +83,9 @@ func _ready():
 	if (init_operation == "new_game"):
 		new_game()
 		pass
+	if (init_operation == "load"):
+		load_game()
+		pass
 	pass
 
 func add_columns():
@@ -93,10 +98,11 @@ func add_columns():
 		pass
 	pass
 
-func init(_alphabet, _dictionary, _init_operation):
+func init(_alphabet, _dictionary, _init_operation, _load_data = null):
 	alphabet = _alphabet
 	dictionary = _dictionary
 	init_operation = _init_operation
+	load_data = _load_data
 	#alphabet = Alphabet.new(settings.alphabet)
 	#dictionary = _Dictionary.new(settings.dictionary)
 	
@@ -475,4 +481,41 @@ func _on_SubmitButton_pressed():
 	if (can_submit):
 		submit_word()
 		pass
+	pass # replace with function body
+
+func serialize():
+	var result = {}
+	result.dictionary = dictionary.dictionary_settings.name
+	result.alphabet = alphabet.alphabet_settings.name
+	result.stats = stats
+	result.level = level
+	result.score = score
+	result.last_level = last_level
+	result.next_level = next_level
+	result.selected_tiles = []
+	for selected_tile in selected_tiles:
+		result.selected_tiles.append({ "row": selected_tile.id, "col": selected_tile.column.id })
+		pass
+	result.columns = []
+	for column in columns:
+		var serialized_column = []
+		for tile in column.tiles:
+			serialized_column.append(tile.serialize())
+			pass
+		result.columns.append(serialized_column)
+		pass
+	return result
+	pass
+
+func save_game():
+	var f = File.new()
+	f.open("user://save.json", File.WRITE)
+	f.store_string(serialize().to_json())
+	f.close()
+	pass
+
+func _on_MenuButton_pressed():
+	save_game()
+	get_tree().change_scene("res://Menu.tscn")
+	queue_free()
 	pass # replace with function body

@@ -228,3 +228,12 @@ func _on_AnimationPlayer_finished():
 		queue_free()
 		pass
 	pass # replace with function body
+
+func serialize():
+	var result = {}
+	result.letter = letter
+	result.points = points
+	result.hp = hp
+	result.name = Name
+	return result
+	pass

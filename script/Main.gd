@@ -48,6 +48,7 @@ func _ready():
 	Globals.set("Fonts", fonts)
 	Globals.set("Dictionaries", dictionaries)
 	Globals.set("Alphabets", alphabets)
+	Globals.set("UserDir", user_dir)
 	
 	languages = Table.new()
 	languages.init("Languages")
