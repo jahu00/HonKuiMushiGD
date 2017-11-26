@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=1]
+
+[ext_resource path="res://Tile.tscn" type="PackedScene" id=1]
+[ext_resource path="res://gfx/flame.png" type="Texture" id=2]
+[ext_resource path="res://BurningEFX.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gfx/green.png" type="Texture" id=4]
+[ext_resource path="res://ShineEFX.tscn" type="PackedScene" id=5]
+[ext_resource path="res://gfx/gold.png" type="Texture" id=6]
+[ext_resource path="res://gfx/dimond.png" type="Texture" id=7]
+[ext_resource path="res://GlitterEFX.tscn" type="PackedScene" id=8]
+
+[node name="TileFactory" type="Node"]
+
+[node name="Tile" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( 60, 60 )
+
+[node name="Flame" parent="." instance=ExtResource( 1 )]
+
+editor/display_folded = true
+transform/pos = Vector2( 180, 60 )
+MaxHp = 999
+Flame = true
+Name = "Flame"
+WordColor = Color( 1, 0.28125, 0, 1 )
+
+[node name="Sprite" parent="Flame"]
+
+texture = ExtResource( 2 )
+
+[node name="Letter" parent="Flame"]
+
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+
+[node name="Points" parent="Flame"]
+
+visibility/visible = false
+
+[node name="BurningEFX" parent="Flame/Effects" instance=ExtResource( 3 )]
+
+[node name="Green" parent="." instance=ExtResource( 1 )]
+
+editor/display_folded = true
+transform/pos = Vector2( 300, 60 )
+Bonus = 2
+MaxHp = 2
+Name = "Green"
+WordColor = Color( 0, 1, 0, 1 )
+
+[node name="Sprite" parent="Green"]
+
+texture = ExtResource( 4 )
+
+[node name="ShineEFX" parent="Green/Effects" instance=ExtResource( 5 )]
+
+[node name="Sprite" parent="Green/Effects/ShineEFX"]
+
+visibility/opacity = 0.126959
+modulate = Color( 0.40625, 1, 0.526855, 1 )
+
+[node name="Gold" parent="." instance=ExtResource( 1 )]
+
+editor/display_folded = true
+transform/pos = Vector2( 420, 60 )
+Bonus = 4
+MaxHp = 4
+Name = "Gold"
+WordColor = Color( 1, 1, 0, 1 )
+
+[node name="Sprite" parent="Gold"]
+
+texture = ExtResource( 6 )
+
+[node name="ShineEFX" parent="Gold/Effects" instance=ExtResource( 5 )]
+
+[node name="Dimond" parent="." instance=ExtResource( 1 )]
+
+transform/pos = Vector2( 540, 60 )
+Bonus = 6
+MaxHp = 6
+Name = "Dimond"
+WordColor = Color( 0.512924, 0.821807, 0.972656, 1 )
+
+[node name="Sprite" parent="Dimond"]
+
+texture = ExtResource( 7 )
+
+[node name="GlitterEFX" parent="Dimond/Effects" instance=ExtResource( 8 )]
+
+
+[editable path="Flame"]
+[editable path="Green"]
+[editable path="Green/Effects/ShineEFX"]
+[editable path="Gold"]
+[editable path="Dimond"]

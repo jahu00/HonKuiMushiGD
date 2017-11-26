@@ -1,0 +1,31 @@
+{
+"language": "EN",
+"letters":
+[
+	{"letter":"e","frequency":12,"points":1},
+	{"letter":"a","frequency":9,"points":1},
+	{"letter":"i","frequency":9,"points":1},
+	{"letter":"o","frequency":8,"points":1},
+	{"letter":"n","frequency":6,"points":1},
+	{"letter":"r","frequency":6,"points":1},
+	{"letter":"t","frequency":6,"points":1},
+	{"letter":"l","frequency":4,"points":1},
+	{"letter":"s","frequency":4,"points":1},
+	{"letter":"d","frequency":4,"points":2},
+	{"letter":"g","frequency":3,"points":2},
+	{"letter":"b","frequency":2,"points":3},
+	{"letter":"c","frequency":2,"points":3},
+	{"letter":"m","frequency":2,"points":3},
+	{"letter":"p","frequency":2,"points":3},
+	{"letter":"f","frequency":2,"points":4},
+	{"letter":"h","frequency":2,"points":4},
+	{"letter":"v","frequency":2,"points":4},
+	{"letter":"w","frequency":2,"points":4},
+	{"letter":"y","frequency":2,"points":4},
+	{"letter":"k","frequency":1,"points":5},
+	{"letter":"j","frequency":1,"points":8},
+	{"letter":"x","frequency":1,"points":8},
+	{"letter":"q","frequency":1,"points":10},
+	{"letter":"z","frequency":1,"points":10}
+]
+}

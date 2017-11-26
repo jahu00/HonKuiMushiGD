@@ -1,0 +1,63 @@
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://script/ShineEFX.gd" type="Script" id=1]
+[ext_resource path="res://gfx/shine-efx.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+
+resource/name = "Blink"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:visibility/opacity")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0.3, 1, 2 ),
+"transitions": FloatArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.3, 0.0, 0.3 ]
+}
+
+[sub_resource type="Animation" id=2]
+
+resource/name = "Default"
+length = 0.01
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:visibility/opacity")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ 0.3 ]
+}
+
+[node name="ShineEFX" type="Node2D"]
+
+script/script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+visibility/opacity = 0.5
+transform/pos = Vector2( 0, 9.53674e-07 )
+transform/scale = Vector2( 0.9375, 0.9375 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/Blink = SubResource( 1 )
+anims/Default = SubResource( 2 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
+
+

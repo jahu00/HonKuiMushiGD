@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=1]
+
+[ext_resource path="res://script/Arrow.gd" type="Script" id=1]
+[ext_resource path="res://gfx/arrow.png" type="Texture" id=2]
+
+[node name="Arrow" type="Node2D"]
+
+script/script = ExtResource( 1 )
+
+[node name="Shadow" type="Sprite" parent="."]
+
+transform/pos = Vector2( -1, 2 )
+texture = ExtResource( 2 )
+modulate = Color( 0.155058, 0.277344, 0.137589, 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+texture = ExtResource( 2 )
+modulate = Color( 0.433384, 0.804688, 0.380341, 1 )
+
+
