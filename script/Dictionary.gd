@@ -163,7 +163,7 @@ func find_all(search, dictionary_data):
 			pass
 		var end = dictionary_data.find("\n", pos + 1)
 		if (end == -1):
-			end = dictionary_data.length
+			end = dictionary_data.length()
 			pass
 		result.append(dictionary_data.substr(pos + 1, end - pos - 1))
 		pass
@@ -196,11 +196,12 @@ func indexed_lookup(word, dictionary_data, index, index_level = 1):
 		pass
 	var result = []
 	for index_entry in index[key]:
+		var dictionary_subset = dictionary_data.substr(index_entry.start, index_entry.end - index_entry.start)
 		if (index_entry.has("index")):
-			append_array(result, indexed_lookup(word, dictionary_data.substr(index_entry.start, index_entry.end - index_entry.start), index_entry.index, index_level + 1))
+			append_array(result, indexed_lookup(word, dictionary_subset, index_entry.index, index_level + 1))
 			pass
 		else:
-			append_array(result, find_all("\n" + word + "/", dictionary_data))
+			append_array(result, find_all("\n" + word + "/", dictionary_subset))
 			#append_array(result, find_all("\n" + word + "/", dictionary_data))
 			pass
 		
