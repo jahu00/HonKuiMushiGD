@@ -15,6 +15,9 @@ func _init(rule_definition):
 		replaces = ''
 		pass
 	replacement = regex.get_capture(4)
+	if (replacement == "0"):
+		replacement = ''
+		pass
 	var rule_code = regex.get_capture(5)
 	if (type == "PFX"):
 		rule_code = "^" + rule_code
@@ -37,7 +40,7 @@ func _init(rule_definition):
 func substract(word):
 	var result = null
 	if (type == "PFX"):
-		if (!word.begins_with(replacement)):
+		if (replacement != '' && !word.begins_with(replacement)):
 			return word
 			pass
 		result = word.substr(replacement.length(), word.length() - replacement.length())
@@ -45,7 +48,7 @@ func substract(word):
 		pass
 	
 	if (type == "SFX"):
-		if (!word.ends_with(replacement)):
+		if (replacement != '' && !word.ends_with(replacement)):
 			return word
 			pass
 		result = word.substr(0, word.length() - replacement.length())
