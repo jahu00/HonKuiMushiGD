@@ -29,6 +29,9 @@ var tile_add_index = 0
 var alphabet
 var dictionary
 
+var alphabet_id
+var dictionary_id
+
 var width = 7
 var height = 8
 
@@ -36,6 +39,7 @@ var can_submit = false
 #var animating = false
 var game_over = false
 var leveling_up = false
+#var loading = true
 
 var status = "awaiting_move"
 var animated_columns = 0
@@ -44,6 +48,7 @@ var Column = preload("res://Column.tscn")
 var Tile = preload("res://Tile.tscn")
 var LevelUp = preload("res://LevelUp.tscn")
 var TileFactory = preload("res://TileFactory.tscn")
+var LoadingScreen = preload("res://Loading.tscn")
 
 var init_operation
 
@@ -60,6 +65,7 @@ var fonts
 var load_data
 
 func _ready():
+	start_loading();
 	tile_size = Globals.get("TileSize")
 	
 	fonts = Globals.get("Fonts")
@@ -69,7 +75,7 @@ func _ready():
 	
 	settings = Globals.get("Settings")
 	playfield = get_node("Playfield")
-	sidebar = get_node("Sidebar")
+	sidebar = get_node("SideBar")
 	score_label = get_node("SideBar/ScoreLabel")
 	#word_label = get_node("SideBar/WordLabel")
 	word_block = get_node("SideBar/WordBlock")
@@ -80,11 +86,35 @@ func _ready():
 	progress_bar.set_progress(0.0)
 	tile_factory = TileFactory.instance()
 	add_columns()
+	#end_loading()
+	var thread = Thread.new()
+	thread.start(self, "load_dictionary", 1)
+	#load_dictionary()
+	pass
+
+func start_loading():
+	var loading_screen = LoadingScreen.instance()
+	get_node("Overlay").add_child(loading_screen)
+	pass
+
+func load_dictionary(dummy):
+	dictionary = dictionaries.get_dictionary_by_id(dictionary_id)
+	alphabet = alphabets.get_alphabet_by_id(alphabet_id)
+	end_loading()
+	pass
+
+func end_loading():
+	var loading_screen = get_node("Overlay/Loading")
+	if (loading_screen != null):
+		loading_screen.queue_free()
+		pass
 	if (init_operation == "new_game"):
-		new_game()
+		call_deferred("new_game")
+		#new_game()
 		pass
 	if (init_operation == "load"):
-		load_game()
+		#load_game()
+		call_deferred("load_game")
 		pass
 	pass
 
@@ -98,9 +128,12 @@ func add_columns():
 		pass
 	pass
 
-func init(_alphabet, _dictionary, _init_operation, _load_data = null):
-	alphabet = _alphabet
-	dictionary = _dictionary
+#func init(_alphabet, _dictionary, _init_operation, _load_data = null):
+func init(_alphabet_id, _dictionary_id, _init_operation, _load_data = null):
+	#alphabet = _alphabet
+	#dictionary = _dictionary
+	alphabet_id = _alphabet_id
+	dictionary_id = _dictionary_id
 	init_operation = _init_operation
 	load_data = _load_data
 	#alphabet = Alphabet.new(settings.alphabet)
@@ -146,6 +179,10 @@ func get_tile(requesting_column):
 	tile_add_index += 1
 	return new_tile
 
+func await_move():
+	status = "awaiting_move"
+	pass
+
 func column_stopped(column):
 	column.update_burning()
 	animated_columns -= 1
@@ -164,11 +201,11 @@ func column_stopped(column):
 				insert_bonus_tiles()
 				pass
 			else:
-				status = "awaiting_move"
+				await_move()
 				pass
 			pass
 		elif (status == "insert_bonus_tiles"):
-			status = "awaiting_move"
+			await_move()
 			pass
 		pass
 	#print(status + " " + str(animated_columns))

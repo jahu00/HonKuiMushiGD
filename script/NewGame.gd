@@ -59,10 +59,11 @@ func _on_BackButton_pressed():
 
 
 func _on_ConfirmButton_pressed():
-	var dictionary = dictionaries.get_dictionary_by_id(dictionary_drop_down.get_selected_ID())
-	var alphabet = alphabets.get_alphabet_by_id(alphabet_drop_down.get_selected_ID())
+	#var dictionary = dictionaries.get_dictionary_by_id(dictionary_drop_down.get_selected_ID())
+	#var alphabet = alphabets.get_alphabet_by_id(alphabet_drop_down.get_selected_ID())
 	var game = load("res://Game.tscn").instance()
-	game.init(alphabet, dictionary, "new_game")
+	#game.init(alphabet, dictionary, "new_game")
+	game.init(alphabet_drop_down.get_selected_ID(), dictionary_drop_down.get_selected_ID(), "new_game")
 	get_tree().get_root().add_child(game)
 	get_tree().change_scene_to(game)
 	pass

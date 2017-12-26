@@ -300,8 +300,4 @@ transform/pos = Vector2( 0, 50 )
 z/z = 1
 z/relative = false
 
-[connection signal="input_event" from="." to="." method="_on_Tile_input_event"]
-
-[connection signal="finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_finished"]
-
 

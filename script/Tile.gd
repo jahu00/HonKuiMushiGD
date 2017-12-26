@@ -45,13 +45,19 @@ var BurningEFX = preload("res://BurningEFX.tscn")
 
 var tile_size
 
+var starting_animation = "Default"
+
 func _ready():
 	tile_size = Globals.get("TileSize")
 	hp = MaxHp
+	connect("input_event", self, "_on_Tile_input_event")
+	animation = get_node("AnimationPlayer")
+	animation.connect("finished", self, "_on_AnimationPlayer_finished")
+	animation.play(starting_animation)
 	set_fixed_process(true)
 	pass
 
-func init(_column, _letter, _status, _points):
+func init(_column, _letter, _status, _points, _starting_animation = "Default"):
 	column = _column
 	if (column != null):
 		game = column.game
@@ -60,7 +66,6 @@ func init(_column, _letter, _status, _points):
 	get_node("Letter").set_text(letter.to_upper())
 	status = _status
 	points = _points
-	
 	#speed = MaxSpeed#round(MaxSpeed * (1 + rand_range(-SpeedSpread,SpeedSpread)))
 	
 #	if (ShowPonits):
@@ -75,8 +80,9 @@ func init(_column, _letter, _status, _points):
 	get_node("Points").set_frame(point_frame)
 	
 	arrow = get_node("Arrow")
-	animation = get_node("AnimationPlayer")
-	animation.play("Default")
+	animate(_starting_animation)
+	#animation = get_node("AnimationPlayer")
+	#animation.play("Default")
 	pass
 
 func init_from_tile(_tile, _status):
@@ -139,14 +145,16 @@ func should_move():
 func select():
 	if (!selected):
 		selected = true
-		animation.play("Select")
+		#animation.play("Select")
+		animate("Select")
 		pass
 	pass
 
 func deselect():
 	if (selected):
 		selected = false
-		animation.play("Deselect")
+		#animation.play("Deselect")
+		animate("Deselect")
 		hide_arrow()
 		pass
 	pass
@@ -160,7 +168,8 @@ func burn():
 	hp -= 1
 	if (hp == 0):
 		ignore = true
-		animation.play("Burn")
+		#animation.play("Burn")
+		animate("Burn")
 		return true
 		pass
 	return false
@@ -205,16 +214,28 @@ func replace(_replacement):
 	spin_out()
 	pass
 
+func animate(animation_name):
+	if (animation == null):
+		starting_animation = animation_name;
+		pass
+	else:
+		animation.play(animation_name)
+		pass
+	pass
+
 func spin_out():
-	animation.play("SpinOut")
+	#animation.play("SpinOut")
+	animate("SpinOut")
 	pass
 
 func prepare_spin_in():
-	animation.play("PreSpinIn")
+	#animation.play("PreSpinIn")
+	animate("PreSpinIn")
 	pass
 
 func spin_in():
-	animation.play("SpinIn")
+	#animation.play("SpinIn")
+	animate("SpinIn")
 	pass
 
 func _on_AnimationPlayer_finished():
