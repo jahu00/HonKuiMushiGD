@@ -1,5 +1,7 @@
 extends Node
 
+var save_game_path = "user://save.json"
+
 var playfield
 var sidebar
 var score_label
@@ -64,6 +66,8 @@ var fonts
 
 var load_data
 
+var load_thread
+
 func _ready():
 	start_loading();
 	tile_size = Globals.get("TileSize")
@@ -87,8 +91,13 @@ func _ready():
 	tile_factory = TileFactory.instance()
 	add_columns()
 	#end_loading()
-	var thread = Thread.new()
-	thread.start(self, "load_dictionary", 1)
+	if (init_operation == "load_game"):
+		load_game_data()
+		dictionary_id = load_data.dictionary
+		alphabet_id = load_data.alphabet
+		pass
+	load_thread = Thread.new()
+	load_thread.start(self, "load_dictionary", 1)
 	#load_dictionary()
 	pass
 
@@ -100,7 +109,7 @@ func start_loading():
 func load_dictionary(dummy):
 	dictionary = dictionaries.get_dictionary_by_id(dictionary_id)
 	alphabet = alphabets.get_alphabet_by_id(alphabet_id)
-	end_loading()
+	call_deferred("end_loading")
 	pass
 
 func end_loading():
@@ -109,12 +118,13 @@ func end_loading():
 		loading_screen.queue_free()
 		pass
 	if (init_operation == "new_game"):
-		call_deferred("new_game")
-		#new_game()
+		#call_deferred("new_game")
+		new_game()
 		pass
-	if (init_operation == "load"):
+	if (init_operation == "load_game"):
+		resume_game();
 		#load_game()
-		call_deferred("load_game")
+		#call_deferred("load_game")
 		pass
 	pass
 
@@ -128,25 +138,23 @@ func add_columns():
 		pass
 	pass
 
-#func init(_alphabet, _dictionary, _init_operation, _load_data = null):
-func init(_alphabet_id, _dictionary_id, _init_operation, _load_data = null):
-	#alphabet = _alphabet
-	#dictionary = _dictionary
+func init(_alphabet_id, _dictionary_id, _init_operation):
 	alphabet_id = _alphabet_id
 	dictionary_id = _dictionary_id
 	init_operation = _init_operation
-	load_data = _load_data
-	#alphabet = Alphabet.new(settings.alphabet)
-	#dictionary = _Dictionary.new(settings.dictionary)
 	
 	#new_game()
 	
 	pass
 
-func fill_playfield(_status):
+func fill_playfield(_status, data = null):
 	for i in range(0,width):
 		var column = columns[i]
-		column.fill()
+		var column_data = null
+		if (data != null):
+			column_data = data[i]
+			pass
+		column.fill(column_data)
 		#if (column.should_animate()):
 		animated_columns += 1
 		column.animate()
@@ -161,9 +169,42 @@ func new_game():
 	fill_playfield("new_game_fill")
 	pass
 
-func get_tile(requesting_column):
+func load_game_data():
+	var f = File.new()
+	f.open(save_game_path, File.READ)
+	var json_str  = f.get_as_text()
+	load_data = {}
+	load_data.parse_json(json_str)
+	f.close()
+	pass
+
+func resume_game():
+	#result.stats = stats
+	level = load_data.level
+	update_level()
+	score = load_data.score
+	last_level = load_data.last_level
+	next_level = load_data.next_level
+	update_score()
+	update_progress_bar()
+#	result.selected_tiles = []
+#	for selected_tile in selected_tiles:
+#		result.selected_tiles.append({ "row": selected_tile.id, "col": selected_tile.column.id })
+#		pass
+#	result.columns = []
+	fill_playfield("load_game_fill", load_data.columns)
+	
+	pass
+
+func get_tile(requesting_column, data = null):
 	var new_tile
-	if (bonus_tile_index.has(tile_add_index)):
+	var tile_status = "moving"
+	if (data != null):
+		new_tile = tile_factory.get_node(data.name).duplicate()
+		new_tile.init(requesting_column, data.letter, tile_status, data.points)
+		return new_tile
+		pass
+	elif (bonus_tile_index.has(tile_add_index)):
 		new_tile = tile_factory.get_node(bonus_tile_index[tile_add_index]).duplicate()
 		bonus_tile_index.erase(tile_add_index)
 		pass
@@ -175,7 +216,7 @@ func get_tile(requesting_column):
 		pass
 	#Tile.instance()
 	var letter = alphabet.get_random_letter()
-	new_tile.init(requesting_column, letter.letter, "moving", letter.points)
+	new_tile.init(requesting_column, letter.letter, tile_status, letter.points)
 	tile_add_index += 1
 	return new_tile
 
@@ -196,7 +237,10 @@ func column_stopped(column):
 		elif (status == "burning_tiles"):
 			fill_playfield("post_burn_fill")
 			pass
-		elif (status == "post_burn_fill" || status == "new_game_fill"):
+		elif (status == "new_game_fill"):
+			await_move()
+			pass
+		elif (status == "post_burn_fill"):
 			if (bonus_tiles_to_insert.size() > 0):
 				insert_bonus_tiles()
 				pass
@@ -204,6 +248,12 @@ func column_stopped(column):
 				await_move()
 				pass
 			pass
+		elif (status == "load_game_fill"):
+			for selected_tile in load_data.selected_tiles:
+				try_select_tile(columns[selected_tile.col].tiles[selected_tile.row])
+				pass
+			update_word()
+			await_move()
 		elif (status == "insert_bonus_tiles"):
 			await_move()
 			pass
@@ -442,8 +492,7 @@ func submit_word():
 		pass
 	
 	word = ""
-	#update_score()
-	score_label.set_score(score)
+	update_score()
 	update_progress_bar()
 	
 	stats.tile_count += selected_tiles.size()
@@ -485,6 +534,10 @@ func compute_flame_chance(word):
 	return result
 	pass
 
+func update_score():
+	score_label.set_score(score)
+	pass
+
 func update_progress_bar():
 	var progress = (score - last_level) / (next_level - last_level)
 	if (progress > 1):
@@ -493,11 +546,15 @@ func update_progress_bar():
 	progress_bar.set_progress(progress)
 	pass
 
+func update_level():
+	level_label.set_text("Level " + str(level))
+	pass
+
 func level_up():
 	leveling_up = true
 	level += 1
 	last_level = next_level
-	level_label.set_text("Level " + str(level))
+	update_level()
 	next_level = next_level + 3000 + (level - 1) * 1000
 	var popup = LevelUp.instance()
 	popup.init(self, level, stats)
@@ -522,8 +579,8 @@ func _on_SubmitButton_pressed():
 
 func serialize():
 	var result = {}
-	result.dictionary = dictionary.dictionary_settings.name
-	result.alphabet = alphabet.alphabet_settings.name
+	result.dictionary = dictionary.dictionary_settings.id#name
+	result.alphabet = alphabet.alphabet_settings.id#name
 	result.stats = stats
 	result.level = level
 	result.score = score
@@ -546,7 +603,7 @@ func serialize():
 
 func save_game():
 	var f = File.new()
-	f.open("user://save.json", File.WRITE)
+	f.open(save_game_path, File.WRITE)
 	f.store_string(serialize().to_json())
 	f.close()
 	pass

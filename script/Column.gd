@@ -27,7 +27,7 @@ func init(_game, _id, _max_tiles, _offset):
 	offset = _offset
 	pass
 
-func fill():
+func fill(data = null):
 	var child_count = 0
 	for child in get_children():
 		if child.ignore == true:
@@ -38,14 +38,26 @@ func fill():
 	
 	if (child_count < max_tiles):
 		for i in range(0, max_tiles - child_count):
-			var new_tile = game.get_tile(self)
+			var tile_data = null
+			if (data != null):
+				tile_data = data[max_tiles - i - 1]
+				pass
+			var new_tile = game.get_tile(self, tile_data)
+			#new_tile = game.get_tile(self)
 			new_tile.set_pos(Vector2(0, tile_size * (i + 2) * -1))
 			add_child(new_tile)
 			move_child(new_tile, 0)
+			#push_tile(new_tile, i)
 			pass
 		
 		index_tiles()
 	pass
+
+#func push_tile(tile, row):
+#	tile.set_pos(Vector2(0, tile_size * (row + 2) * -1))
+#	add_child(tile)
+#	move_child(tile, 0)
+#	pass
 
 func _fixed_process(delta):
 	if (status == "moving" || status == "burning"):

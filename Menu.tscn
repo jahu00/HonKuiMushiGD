@@ -327,4 +327,6 @@ autoplay = ""
 
 [connection signal="pressed" from="NewGame" to="." method="_on_NewGame_pressed"]
 
+[connection signal="pressed" from="Continue" to="." method="_on_Continue_pressed"]
+
 
