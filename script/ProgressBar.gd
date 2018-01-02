@@ -1,7 +1,7 @@
 extends Sprite
 
 export(float) var MinStep = 0.01
-export(float) var UpdateSpeed = 0.05
+export(float) var UpdateSpeed = 0.10
 
 var progress = 100.0
 var temp_progress = 100.0
@@ -11,9 +11,14 @@ func _ready():
 	pass
 
 func set_progress(value):
-	progress = value
 	if (value < progress):
 		temp_progress = 0
+		pass
+	progress = value
+	
+	#make sure that we reset displayed progress for something like progress 0
+	if (temp_progress == progress):
+		update_progress()
 		pass
 	pass
 

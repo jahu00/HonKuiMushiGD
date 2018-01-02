@@ -128,6 +128,16 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( 1e-05, 1 ) ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visibility/visible")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="Animation" id=6]
 
@@ -209,6 +219,7 @@ tracks/0/keys = {
 
 [node name="Tile" type="Area2D"]
 
+transform/scale = Vector2( 1e-05, 1 )
 input/pickable = true
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )

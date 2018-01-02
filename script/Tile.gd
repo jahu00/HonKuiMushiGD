@@ -80,6 +80,7 @@ func init(_column, _letter, _status, _points, _starting_animation = "Default"):
 	get_node("Points").set_frame(point_frame)
 	
 	arrow = get_node("Arrow")
+	#animation = get_node("AnimationPlayer")
 	animate(_starting_animation)
 	#animation = get_node("AnimationPlayer")
 	#animation.play("Default")
@@ -87,8 +88,9 @@ func init(_column, _letter, _status, _points, _starting_animation = "Default"):
 
 func init_from_tile(_tile, _status):
 	init(_tile.column, _tile.letter, _status, _tile.points)
-	id = _tile.id
-	set_pos(_tile.get_pos())
+	#moved to replace
+	#id = _tile.id
+	#set_pos(_tile.get_pos())
 	pass
 
 func get_speed():
@@ -210,6 +212,8 @@ func set_burning(value):
 func replace(_replacement):
 	column.replacement_in_process()
 	replacement = _replacement
+	replacement.id = id
+	replacement.set_pos(get_pos())
 	replacement.prepare_spin_in()
 	spin_out()
 	pass
@@ -225,16 +229,19 @@ func animate(animation_name):
 
 func spin_out():
 	#animation.play("SpinOut")
+	ignore = true
 	animate("SpinOut")
 	pass
 
 func prepare_spin_in():
 	#animation.play("PreSpinIn")
+	hide()
 	animate("PreSpinIn")
 	pass
 
 func spin_in():
 	#animation.play("SpinIn")
+	show()
 	animate("SpinIn")
 	pass
 
@@ -247,6 +254,9 @@ func _on_AnimationPlayer_finished():
 			column.replace_tile(self, replacement)
 			pass
 		queue_free()
+		pass
+	if (animation.get_current_animation() == "SpinIn"):
+		column.replace_end()
 		pass
 	pass # replace with function body
 

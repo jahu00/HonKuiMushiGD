@@ -249,6 +249,9 @@ func replace_tile(_tile, _replacement):
 	add_child(_replacement)
 	move_child(_replacement, child_id)
 	_replacement.spin_in()
+	pass
+
+func replace_end():
 	moving_tiles -= 1
 	if (moving_tiles == 0):
 		game.column_stopped(self)

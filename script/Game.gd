@@ -113,6 +113,7 @@ func load_dictionary(dummy):
 	pass
 
 func end_loading():
+	load_thread.wait_to_finish()
 	var loading_screen = get_node("Overlay/Loading")
 	if (loading_screen != null):
 		loading_screen.queue_free()
@@ -148,6 +149,7 @@ func init(_alphabet_id, _dictionary_id, _init_operation):
 	pass
 
 func fill_playfield(_status, data = null):
+	set_status(_status)
 	for i in range(0,width):
 		var column = columns[i]
 		var column_data = null
@@ -158,11 +160,11 @@ func fill_playfield(_status, data = null):
 		#if (column.should_animate()):
 		animated_columns += 1
 		column.animate()
-		status = _status#"animating_playfield"
+		#status = _status#"animating_playfield"
 #			animating = true
 		#	pass
 		pass
-	status = _status
+	#status = _status
 	pass
 
 func new_game():
@@ -179,7 +181,7 @@ func load_game_data():
 	pass
 
 func resume_game():
-	#result.stats = stats
+	stats = load_data.stats
 	level = load_data.level
 	update_level()
 	score = load_data.score
@@ -196,7 +198,7 @@ func resume_game():
 	
 	pass
 
-func get_tile(requesting_column, data = null):
+func get_tile(requesting_column, data = null, tile_name = null):
 	var new_tile
 	var tile_status = "moving"
 	if (data != null):
@@ -205,34 +207,51 @@ func get_tile(requesting_column, data = null):
 		return new_tile
 		pass
 	elif (bonus_tile_index.has(tile_add_index)):
-		new_tile = tile_factory.get_node(bonus_tile_index[tile_add_index]).duplicate()
+		#new_tile = tile_factory.get_node(bonus_tile_index[tile_add_index]).duplicate()
+		tile_name = bonus_tile_index[tile_add_index]
 		bonus_tile_index.erase(tile_add_index)
 		pass
-	elif (rand_range(0.0, 1.0) < flame_chance):
-		new_tile = tile_factory.get_node("Flame").duplicate()
+	elif (tile_name == null && rand_range(0.0, 1.0) < flame_chance):
+		tile_name = "Flame"
 		pass
-	else:
-		new_tile = tile_factory.get_node("Tile").duplicate()
+	elif (tile_name == null):
+		tile_name = "Tile"
 		pass
 	#Tile.instance()
+	new_tile = tile_factory.get_node(tile_name).duplicate()
 	var letter = alphabet.get_random_letter()
 	new_tile.init(requesting_column, letter.letter, tile_status, letter.points)
 	tile_add_index += 1
 	return new_tile
 
 func await_move():
-	status = "awaiting_move"
+	#status = "awaiting_move"
+	set_status("awaiting_move")
+	pass
+
+func set_status(_status):
+	status = _status
+	#print(status)
 	pass
 
 func column_stopped(column):
+	if (status == "shuffle"):
+		column.index_tiles()
+		column.mark_tiles_to_burn()
+		pass
 	column.update_burning()
 	animated_columns -= 1
+	#print(str(animated_columns))
 	if (animated_columns == 0):
 		#status = "awaiting_move";
 #		animating = false
 
 		if (status == "post_submit_fill"):
 			burn()
+			pass
+		elif (status == "shuffle"):
+			burn()
+			#fill_playfield("post_submit_fill")
 			pass
 		elif (status == "burning_tiles"):
 			fill_playfield("post_burn_fill")
@@ -262,7 +281,8 @@ func column_stopped(column):
 	pass
 
 func insert_bonus_tiles():
-	status = "insert_bonus_tiles"
+	#status = "insert_bonus_tiles"
+	set_status("insert_bonus_tiles")
 	var tile_pool = []
 	for column in columns:
 		for tile in column.tiles:
@@ -272,7 +292,8 @@ func insert_bonus_tiles():
 			pass
 		pass
 	if (tile_pool.size() == 0):
-		status = "awaiting_move"
+		#status = "awaiting_move"
+		await_move()
 		return
 		pass
 	for bonus_tile_to_insert in bonus_tiles_to_insert:
@@ -300,6 +321,7 @@ func mark_tiles_to_burn():
 	pass
 
 func burn():
+	set_status("burning_tiles")
 	for column in columns:
 		column.burn()
 		#if (column.burn()):
@@ -309,7 +331,7 @@ func burn():
 #			animating = true
 #			pass
 		pass
-	status = "burning_tiles"
+	#status = "burning_tiles"
 	pass
 
 func can_select():
@@ -439,6 +461,11 @@ func try_select_tile(tile):
 	#update_word()
 	pass
 
+func clear_bonus_tiles():
+	bonus_tiles_to_insert = []
+	bonus_tile_index = {}
+	pass
+
 func submit_word():
 	flame_chance = compute_flame_chance(word)
 	if (word.length() > stats.longest_word.length()):
@@ -461,8 +488,7 @@ func submit_word():
 		pass
 	
 	var bonus_tiles_to_add = []
-	bonus_tiles_to_insert = []
-	bonus_tile_index = {}
+	clear_bonus_tiles()
 	if (word.length() >= 8 || word.length() > 3 && stats.word_stats[word.length()] % (8 - word.length()) == 0):
 			bonus_tiles_to_add.append("Green")
 			pass
@@ -609,7 +635,53 @@ func save_game():
 	pass
 
 func _on_MenuButton_pressed():
-	save_game()
-	get_tree().change_scene("res://Menu.tscn")
-	queue_free()
+	if (can_select()):
+		save_game()
+		get_tree().change_scene("res://Menu.tscn")
+		queue_free()
+		pass
+	pass # replace with function body
+
+func shuffle():
+	tile_add_index = 0
+	for column in columns:
+		for tile in column.tiles:
+			if (tile.ignore || tile.Flame):
+				continue
+				pass
+			var new_tile
+			var tile_name = "Tile"
+			if (tile.id == 0 && rand_range(0, 7) <= 2):
+				tile_name = "Flame"
+				new_tile = tile_factory.get_node(tile_name).duplicate()
+				new_tile.init_from_tile(tile, "moving")
+				pass
+			else:
+				new_tile = get_tile(column, null, tile_name)
+				pass
+			if (!new_tile.Flame && tile.burning):
+				#new_tile.burning = true
+				new_tile.set_burning(true)
+				pass
+			tile.replace(new_tile)
+			pass
+		pass
+		if (column.status == "replacing"):
+			animated_columns += 1
+			pass
+		pass
+	
+	if (animated_columns > 0):
+		#status = "shuffle"
+		set_status("shuffle")
+		pass
+	else:
+		burn()
+		pass
+	pass
+
+func _on_ShuffleButton_pressed():
+	if (can_select()):
+		shuffle()
+		pass
 	pass # replace with function body

@@ -212,6 +212,7 @@ offset = Vector2( 128.584, 32 )
 
 [node name="WordBlock" type="Node2D" parent="SideBar"]
 
+editor/display_folded = true
 visibility/visible = false
 visibility/opacity = 0.0
 transform/pos = Vector2( 189, 114 )
@@ -272,6 +273,7 @@ autoplay = ""
 
 [node name="LevelLabel" type="Label" parent="SideBar"]
 
+editor/display_folded = true
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -307,6 +309,8 @@ autoplay = ""
 
 [node name="SubmitButton" parent="SideBar" instance=ExtResource( 9 )]
 
+editor/display_folded = true
+
 [node name="ProgressBar" type="Sprite" parent="SideBar"]
 
 transform/pos = Vector2( 190, 310 )
@@ -318,12 +322,23 @@ UpdateSpeed = 0.05
 
 [node name="MenuButton" parent="SideBar" instance=ExtResource( 9 )]
 
+editor/display_folded = true
 margin/top = 840.0
 margin/bottom = 930.0
 
 [node name="Label" parent="SideBar/MenuButton"]
 
 text = "Menu"
+
+[node name="ShuffleButton" parent="SideBar" instance=ExtResource( 9 )]
+
+editor/display_folded = true
+margin/top = 370.0
+margin/bottom = 460.0
+
+[node name="Label" parent="SideBar/ShuffleButton"]
+
+text = "Shuffle"
 
 [node name="Overlay" type="Node2D" parent="."]
 
@@ -333,6 +348,9 @@ z/z = 1
 
 [connection signal="pressed" from="SideBar/MenuButton" to="." method="_on_MenuButton_pressed"]
 
+[connection signal="pressed" from="SideBar/ShuffleButton" to="." method="_on_ShuffleButton_pressed"]
+
 
 [editable path="SideBar/SubmitButton"]
 [editable path="SideBar/MenuButton"]
+[editable path="SideBar/ShuffleButton"]
