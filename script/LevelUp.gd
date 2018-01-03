@@ -7,7 +7,8 @@ var animation
 var levelLabel
 var tile_stats
 
-var level
+#var level
+var title
 var stats
 var game
 
@@ -20,7 +21,8 @@ func _ready():
 	animation = get_node("AnimationPlayer")
 	animation.play("Default")
 	levelLabel = get_node("Popup/LevelLabel")
-	levelLabel.set_text("Chapter " + str(level))
+	#levelLabel.set_text("Chapter " + str(level))
+	levelLabel.set_text(title)
 	get_node("Popup/BestWordLabel").set_text(stats.best_word.word.to_upper())
 	get_node("Popup/BestWordScoreLabel").set_score(stats.best_word.points)
 	get_node("Popup/LongestWordLabel").set_text(stats.longest_word.to_upper())
@@ -31,9 +33,11 @@ func _ready():
 	set_fixed_process(true)
 	pass
 
-func init(_game, _level, _stats):
+#func init(_game, _level, _stats):
+func init(_game, _title, _stats):
 	game = _game
-	level = _level
+	#level = _level
+	title = _title
 	stats = _stats
 	pass
 

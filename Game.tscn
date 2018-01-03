@@ -318,7 +318,7 @@ transform/scale = Vector2( 1.71094, 1.75 )
 texture = ExtResource( 10 )
 script/script = ExtResource( 11 )
 MinStep = 0.005
-UpdateSpeed = 0.05
+UpdateSpeed = 1.0
 
 [node name="MenuButton" parent="SideBar" instance=ExtResource( 9 )]
 

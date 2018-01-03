@@ -1,5 +1,7 @@
 extends Node
 
+var UserDir
+
 var save_game_path = "user://save.json"
 
 var playfield
@@ -70,6 +72,7 @@ var load_thread
 
 func _ready():
 	start_loading();
+	UserDir = Globals.get("UserDir")
 	tile_size = Globals.get("TileSize")
 	
 	fonts = Globals.get("Fonts")
@@ -227,6 +230,9 @@ func get_tile(requesting_column, data = null, tile_name = null):
 func await_move():
 	#status = "awaiting_move"
 	set_status("awaiting_move")
+	if (game_over):
+		show_level_up_popup("The End")
+		pass
 	pass
 
 func set_status(_status):
@@ -576,20 +582,33 @@ func update_level():
 	level_label.set_text("Level " + str(level))
 	pass
 
+func show_level_up_popup(text):
+	var popup = LevelUp.instance()
+	#popup.init(self, level, stats)
+	popup.init(self, text, stats)
+	add_child(popup)
+	pass
+
 func level_up():
-	leveling_up = true
 	level += 1
 	last_level = next_level
 	update_level()
 	next_level = next_level + 3000 + (level - 1) * 1000
-	var popup = LevelUp.instance()
-	popup.init(self, level, stats)
-	add_child(popup)
+	if (!game_over):
+		leveling_up = true
+		show_level_up_popup("Chapter " + str(level))
+		pass
 	pass
 
 func finish_leveling_up():
 	leveling_up = false
-	update_progress_bar()
+	if (game_over):
+		end_game()
+		go_to_menu()
+		pass
+	else:
+		update_progress_bar()
+		pass
 	pass
 
 func game_over():
@@ -634,6 +653,17 @@ func save_game():
 	f.close()
 	pass
 
+func end_game():
+	if (UserDir.file_exists("save.json")):
+		UserDir.remove(save_game_path)
+		pass
+	pass
+
+func go_to_menu():
+	get_tree().change_scene("res://Menu.tscn")
+	queue_free()
+	pass
+
 func _on_MenuButton_pressed():
 	if (can_select()):
 		save_game()
@@ -644,6 +674,18 @@ func _on_MenuButton_pressed():
 
 func shuffle():
 	tile_add_index = 0
+	var flame_tile_column = -1
+	var flame_column_index = []
+	for column in columns:
+		if (!column.tiles[0].Flame):
+			flame_column_index.append(column.id)
+			pass
+		pass
+	
+	if (flame_column_index.size() > 0):
+		flame_tile_column = flame_column_index[rand_range(0, flame_column_index.size())]
+		pass
+	
 	for column in columns:
 		for tile in column.tiles:
 			if (tile.ignore || tile.Flame):
@@ -651,7 +693,7 @@ func shuffle():
 				pass
 			var new_tile
 			var tile_name = "Tile"
-			if (tile.id == 0 && rand_range(0, 7) <= 2):
+			if (tile.id == 0 && (rand_range(0, 14) <= 1 || column.id == flame_tile_column)):
 				tile_name = "Flame"
 				new_tile = tile_factory.get_node(tile_name).duplicate()
 				new_tile.init_from_tile(tile, "moving")

@@ -1,7 +1,7 @@
 extends Sprite
 
 export(float) var MinStep = 0.01
-export(float) var UpdateSpeed = 0.10
+export(float) var UpdateSpeed = 0.1
 
 var progress = 100.0
 var temp_progress = 100.0
