@@ -674,6 +674,7 @@ func _on_MenuButton_pressed():
 
 func shuffle():
 	tile_add_index = 0
+	clear_bonus_tiles()
 	var flame_tile_column = -1
 	var flame_column_index = []
 	for column in columns:

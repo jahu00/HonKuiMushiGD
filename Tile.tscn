@@ -4,8 +4,7 @@
 [ext_resource path="res://gfx/default.png" type="Texture" id=2]
 [ext_resource path="res://font/montserrat/Montserrat-Regular.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://gfx/points.png" type="Texture" id=4]
-[ext_resource path="res://anim/tile.tres" type="Animation" id=5]
-[ext_resource path="res://Arrow.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Arrow.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -64,6 +63,93 @@ tracks/3/keys = {
 "transitions": FloatArray( 1 ),
 "update": 1,
 "values": [ -1 ]
+}
+
+[sub_resource type="Animation" id=10]
+
+resource/name = "Default"
+length = 0.01
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:transform/rot")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:transform/pos")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ Vector2( 4.76837e-06, 4.76837e-06 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:transform/rot")
+tracks/2/interp = 1
+tracks/2/imported = false
+tracks/2/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprite:modulate")
+tracks/3/interp = 1
+tracks/3/imported = false
+tracks/3/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Points:modulate")
+tracks/4/interp = 1
+tracks/4/imported = false
+tracks/4/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Letter:visibility/opacity")
+tracks/5/interp = 1
+tracks/5/imported = false
+tracks/5/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:z/z")
+tracks/6/interp = 1
+tracks/6/imported = false
+tracks/6/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath(".:transform/scale")
+tracks/7/interp = 1
+tracks/7/imported = false
+tracks/7/keys = {
+"times": FloatArray( 0 ),
+"transitions": FloatArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -139,7 +225,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 
 length = 0.1
 loop = false
@@ -185,7 +271,7 @@ tracks/3/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1.15, 1.15, 1.15, 1 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=8]
 
 length = 0.3
 loop = false
@@ -201,7 +287,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1e-05, 1 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 
 length = 0.3
 loop = false
@@ -291,12 +377,12 @@ playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
 anims/Burn = SubResource( 3 )
-anims/Default = ExtResource( 5 )
+anims/Default = SubResource( 10 )
 anims/Deselect = SubResource( 4 )
 anims/PreSpinIn = SubResource( 5 )
-anims/Select = SubResource( 6 )
-anims/SpinIn = SubResource( 7 )
-anims/SpinOut = SubResource( 8 )
+anims/Select = SubResource( 7 )
+anims/SpinIn = SubResource( 8 )
+anims/SpinOut = SubResource( 9 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
@@ -304,7 +390,7 @@ autoplay = ""
 
 [node name="Effects" type="Node2D" parent="."]
 
-[node name="Arrow" parent="." instance=ExtResource( 6 )]
+[node name="Arrow" parent="." instance=ExtResource( 5 )]
 
 visibility/visible = false
 transform/pos = Vector2( 0, 50 )
