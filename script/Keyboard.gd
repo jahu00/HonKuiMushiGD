@@ -33,7 +33,7 @@ func _ready():
 	keys_container.add_child(new_key)
 	x += 1
 	var new_key = Key.instance()
-	new_key.init("end", null, 0.75)#funcref(self, "remove_letter"))
+	new_key.init("end", funcref(self, "end_pressed"), 0.75)
 	new_key.set_pos(Vector2(x * key_size + key_size * 0.5, y * key_size + key_size * 0.5))
 	keys_container.add_child(new_key)
 	update_text()

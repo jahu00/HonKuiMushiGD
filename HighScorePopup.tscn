@@ -1,14 +1,77 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://script/HighScorePopup.gd" type="Script" id=1]
 [ext_resource path="res://gfx/gui/popup-book.png" type="Texture" id=2]
-[ext_resource path="res://font/PopupH1.tres" type="DynamicFont" id=3]
+[ext_resource path="res://font/montserrat/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://script/FitWidthLabel.gd" type="Script" id=4]
-[ext_resource path="res://font/PopupH2.tres" type="DynamicFont" id=5]
-[ext_resource path="res://font/PopupStrong.tres" type="DynamicFont" id=6]
-[ext_resource path="res://ScoreLabel.tscn" type="PackedScene" id=7]
+[ext_resource path="res://font/montserrat/Montserrat-Regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://ScoreLabel.tscn" type="PackedScene" id=6]
+[ext_resource path="res://font/sigmar-one/SigmarOne.ttf" type="DynamicFontData" id=7]
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="DynamicFont" id=1]
+
+font/size = 48
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=3]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=4]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+
+font/size = 64
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=6]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=7]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=8]
+
+font/size = 64
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=9]
+
+font/size = 32
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 3 )
+
+[sub_resource type="Animation" id=10]
 
 length = 0.01
 loop = false
@@ -34,7 +97,7 @@ tracks/1/keys = {
 "values": [ -5.0 ]
 }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=11]
 
 length = 0.5
 loop = false
@@ -60,7 +123,7 @@ tracks/1/keys = {
 "values": [ 0.0, 0.0 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=12]
 
 length = 0.5
 loop = false
@@ -118,7 +181,7 @@ margin/left = -310.0
 margin/top = -295.0
 margin/right = 0.0
 margin/bottom = -235.0
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "AAAAAAAA"
 align = 1
@@ -141,7 +204,7 @@ margin/left = 40.0
 margin/top = -280.0
 margin/right = 214.0
 margin/bottom = -240.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Best word:"
 percent_visible = 1.0
@@ -158,7 +221,7 @@ margin/left = 30.0
 margin/top = -220.0
 margin/right = 320.0
 margin/bottom = -180.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "AAAAAAAAAAA"
 align = 1
@@ -181,7 +244,7 @@ margin/left = 40.0
 margin/top = -140.0
 margin/right = 320.0
 margin/bottom = -100.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "ABC"
 align = 1
@@ -194,13 +257,14 @@ script/script = ExtResource( 4 )
 BaseFontSize = 32
 MaxTextLength = 11
 
-[node name="BestWordScoreLabel" parent="Popup" instance=ExtResource( 7 )]
+[node name="BestWordScoreLabel" parent="Popup" instance=ExtResource( 6 )]
 
 rect/scale = Vector2( 0.75, 0.75 )
 margin/left = 30.0
 margin/top = -210.0
 margin/right = 417.0
 margin/bottom = -104.0
+custom_fonts/font = SubResource( 5 )
 text = "1,000,000"
 MaxTextLength = 9
 
@@ -214,7 +278,7 @@ margin/left = 40.0
 margin/top = -30.0
 margin/right = 262.0
 margin/bottom = 10.0
-custom_fonts/font = ExtResource( 5 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Longest word:"
 percent_visible = 1.0
@@ -231,7 +295,7 @@ margin/left = 30.0
 margin/top = 30.0
 margin/right = 320.0
 margin/bottom = 70.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "AAAAAAAAAAA"
 align = 1
@@ -244,13 +308,14 @@ script/script = ExtResource( 4 )
 BaseFontSize = 32
 MaxTextLength = 11
 
-[node name="LongestWordScoreLabel" parent="Popup" instance=ExtResource( 7 )]
+[node name="LongestWordScoreLabel" parent="Popup" instance=ExtResource( 6 )]
 
 rect/scale = Vector2( 0.75, 0.75 )
 margin/left = 30.0
 margin/top = 40.0
 margin/right = 417.0
 margin/bottom = 146.0
+custom_fonts/font = SubResource( 8 )
 text = "15 letters"
 script/script = ExtResource( 4 )
 
@@ -264,7 +329,7 @@ margin/left = 40.0
 margin/top = 110.0
 margin/right = 320.0
 margin/bottom = 150.0
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = SubResource( 9 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "ABC"
 align = 1
@@ -286,9 +351,9 @@ transform/pos = Vector2( -280, -180 )
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/Default = SubResource( 1 )
-anims/Hide = SubResource( 2 )
-anims/Show = SubResource( 3 )
+anims/Default = SubResource( 10 )
+anims/Hide = SubResource( 11 )
+anims/Show = SubResource( 12 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]

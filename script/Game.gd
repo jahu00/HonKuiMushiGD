@@ -53,6 +53,7 @@ var Tile = preload("res://Tile.tscn")
 var LevelUp = preload("res://LevelUp.tscn")
 var TileFactory = preload("res://TileFactory.tscn")
 var LoadingScreen = preload("res://Loading.tscn")
+var HighScoreScreen = preload("res://HighScore.tscn")
 
 var init_operation
 
@@ -600,11 +601,20 @@ func level_up():
 		pass
 	pass
 
+func go_to_highscore():
+	var highScore = HighScoreScreen.instance()
+	highScore.init_from_score(dictionary.dictionary_settings.language, score, stats)
+	get_tree().get_root().add_child(highScore)
+	get_tree().change_scene_to(highScore)
+	queue_free();
+	pass
+
 func finish_leveling_up():
 	leveling_up = false
 	if (game_over):
 		end_game()
-		go_to_menu()
+		#go_to_menu()
+		go_to_highscore()
 		pass
 	else:
 		update_progress_bar()

@@ -156,6 +156,4 @@ playback/speed = 1.0
 blend_times = [  ]
 autoplay = ""
 
-[connection signal="mouse_exit" from="." to="." method="_on_Key_mouse_exit"]
-
 

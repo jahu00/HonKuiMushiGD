@@ -65,7 +65,7 @@ tracks/3/keys = {
 "values": [ -1 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=4]
 
 resource/name = "Default"
 length = 0.01
@@ -152,7 +152,7 @@ tracks/7/keys = {
 "values": [ Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 
 length = 0.1
 loop = false
@@ -198,9 +198,8 @@ tracks/3/keys = {
 "values": [ Color( 1.15, 1.15, 1.15, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 
-resource/name = "PreSpinIn"
 length = 0.01
 loop = false
 step = 0.1
@@ -377,9 +376,9 @@ playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
 anims/Burn = SubResource( 3 )
-anims/Default = SubResource( 10 )
-anims/Deselect = SubResource( 4 )
-anims/PreSpinIn = SubResource( 5 )
+anims/Default = SubResource( 4 )
+anims/Deselect = SubResource( 5 )
+anims/PreSpinIn = SubResource( 6 )
 anims/Select = SubResource( 7 )
 anims/SpinIn = SubResource( 8 )
 anims/SpinOut = SubResource( 9 )

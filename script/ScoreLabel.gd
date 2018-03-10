@@ -7,6 +7,7 @@ var score = 0
 var temp_score = 0
 
 func _ready():
+	set_text_and_adjust_size("0")
 	set_fixed_process(true)
 	pass
 

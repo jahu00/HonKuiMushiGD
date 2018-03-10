@@ -212,7 +212,6 @@ offset = Vector2( 128.584, 32 )
 
 [node name="WordBlock" type="Node2D" parent="SideBar"]
 
-editor/display_folded = true
 visibility/visible = false
 visibility/opacity = 0.0
 transform/pos = Vector2( 189, 114 )
@@ -273,7 +272,6 @@ autoplay = ""
 
 [node name="LevelLabel" type="Label" parent="SideBar"]
 
-editor/display_folded = true
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -309,8 +307,6 @@ autoplay = ""
 
 [node name="SubmitButton" parent="SideBar" instance=ExtResource( 9 )]
 
-editor/display_folded = true
-
 [node name="ProgressBar" type="Sprite" parent="SideBar"]
 
 transform/pos = Vector2( 190, 310 )
@@ -322,7 +318,6 @@ UpdateSpeed = 1.0
 
 [node name="MenuButton" parent="SideBar" instance=ExtResource( 9 )]
 
-editor/display_folded = true
 margin/top = 840.0
 margin/bottom = 930.0
 
