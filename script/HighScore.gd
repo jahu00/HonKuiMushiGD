@@ -61,15 +61,24 @@ func _ready():
 	if (user_language != null):
 		language = user_language
 		pass
+	var languages = scores_by_language.keys()
 	get_node("PreviousLanguage").callback = funcref(self, "previous_language")
 	get_node("NextLanguage").callback = funcref(self, "next_language")
+	get_node("ReturnToMenu").init("Menu", funcref(self, "return_to_menu"), 0.75)
 	if (start_action == "show_score"):
+		if (!scores_by_language.has(language) && languages.size() > 0):
+			language = languages[0]
+			pass
 		set_language(language)
 		pass
 	if (start_action == "save_score"):
 		overlay.show()
 		keyboard.show()
 		pass
+	pass
+
+func return_to_menu(dummy):
+	get_tree().change_scene("res://Menu.tscn")
 	pass
 
 func enter_name_callback(name):

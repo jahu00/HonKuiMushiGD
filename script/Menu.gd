@@ -32,3 +32,8 @@ func _on_Continue_pressed():
 	get_tree().get_root().add_child(game)
 	get_tree().change_scene_to(game)
 	pass # replace with function body
+
+
+func _on_HighScore_pressed():
+	get_tree().change_scene("res://HighScore.tscn")
+	pass # replace with function body

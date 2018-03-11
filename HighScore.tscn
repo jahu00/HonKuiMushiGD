@@ -44,6 +44,11 @@ Text = "←"
 transform/pos = Vector2( 1190, 110 )
 Text = "→"
 
+[node name="ReturnToMenu" parent="." instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 80, 880 )
+Text = "Menu"
+
 [node name="Overlay" type="ColorFrame" parent="."]
 
 visibility/visible = false
