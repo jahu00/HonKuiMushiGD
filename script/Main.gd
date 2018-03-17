@@ -3,12 +3,6 @@ extends Node
 var tile_size = 120
 
 var settings = {}
-var dictionary_list = {
-	"res://dictionary/en_US": "EN-US (Internal)"
-}
-var alphabet_list = {
-	"res://alphabet/en.json": "EN (Internal)"
-}
 
 var languages
 var fonts
@@ -49,6 +43,8 @@ func _ready():
 	Globals.set("Dictionaries", dictionaries)
 	Globals.set("Alphabets", alphabets)
 	Globals.set("UserDir", user_dir)
+	Globals.set("Main", self)
+	
 	
 	languages = Table.new()
 	languages.init("Languages")
@@ -121,8 +117,9 @@ func load_settings():
 	pass
 
 func setup_settings():
-	settings["alphabet"] = alphabet_list.keys()[0]
-	settings["dictionary"] = dictionary_list.keys()[0]
+	settings["last_language"] = languages.array[0].name
+	settings["last_alphabet"] = alphabets.array[0].name
+	settings["last_dictionary"] = dictionaries.array[0].name
 	pass
 
 func save_settings():

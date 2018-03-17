@@ -64,7 +64,7 @@ func _ready():
 	var languages = scores_by_language.keys()
 	get_node("PreviousLanguage").callback = funcref(self, "previous_language")
 	get_node("NextLanguage").callback = funcref(self, "next_language")
-	get_node("ReturnToMenu").init("Menu", funcref(self, "return_to_menu"), 0.75)
+	get_node("ReturnToMenu").init("Menu", funcref(self, "return_to_menu"), 0.60)
 	if (start_action == "show_score"):
 		if (!scores_by_language.has(language) && languages.size() > 0):
 			language = languages[0]
