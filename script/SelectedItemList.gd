@@ -47,6 +47,15 @@ func get_selected_value():
 	return null
 	pass
 
+func has_value(value):
+	for key in index_map.keys():
+		if (key == value):
+			return true
+			pass
+		pass
+	return false
+	pass
+
 func add_item_object(var text, var value):
 	items.append({"text": text, "value": value})
 	index_map[value] = items.size() - 1

@@ -99,6 +99,19 @@ func setup_directories():
 #	
 #	pass
 
+func get_font_data(language):
+	var font_data = DynamicFontData.new()
+	var path = ""
+	if (settings.fonts.has(language) && fonts.index.has(settings.fonts[language])):
+		path = fonts.index[settings.fonts[language]].path
+		pass
+	else:
+		path = fonts.array[0].path
+		pass
+	font_data.set_font_path(path)
+	return font_data
+	pass
+
 func load_languages():
 	pass
 
@@ -120,6 +133,7 @@ func setup_settings():
 	settings["last_language"] = languages.array[0].name
 	settings["last_alphabet"] = alphabets.array[0].name
 	settings["last_dictionary"] = dictionaries.array[0].name
+	settings["fonts"] = {}
 	pass
 
 func save_settings():

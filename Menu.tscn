@@ -371,6 +371,8 @@ autoplay = ""
 
 [connection signal="pressed" from="Exit" to="." method="_on_Exit_pressed"]
 
+[connection signal="pressed" from="Settings" to="." method="_on_Settings_pressed"]
+
 [connection signal="pressed" from="NewGame" to="." method="_on_NewGame_pressed"]
 
 [connection signal="pressed" from="HighScore" to="." method="_on_HighScore_pressed"]

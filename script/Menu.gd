@@ -18,22 +18,27 @@ func check_save():
 
 func _on_Exit_pressed():
 	get_tree().quit()
-	pass # replace with function body
+	pass
 
 
 func _on_NewGame_pressed():
 	get_tree().change_scene("res://NewGame.tscn")
-	pass # replace with function body
+	pass
 
 
 func _on_Continue_pressed():
 	var game = load("res://Game.tscn").instance()
-	game.init(null, null, "load_game")
+	game.init(null, null, null, "load_game")
 	get_tree().get_root().add_child(game)
 	get_tree().change_scene_to(game)
-	pass # replace with function body
+	pass
 
 
 func _on_HighScore_pressed():
 	get_tree().change_scene("res://HighScore.tscn")
-	pass # replace with function body
+	pass
+
+
+func _on_Settings_pressed():
+	get_tree().change_scene("res://Settings.tscn")
+	pass

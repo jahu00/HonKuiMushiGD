@@ -30,6 +30,8 @@ var tile_add_index = 0
 
 #var language_key
 
+var main
+var language
 var alphabet
 var dictionary
 
@@ -67,6 +69,8 @@ var alphabets
 var settings
 var fonts
 
+var font_data
+
 var load_data
 
 var load_thread
@@ -75,7 +79,7 @@ func _ready():
 	start_loading();
 	UserDir = Globals.get("UserDir")
 	tile_size = Globals.get("TileSize")
-	
+	main = Globals.get("Main")
 	fonts = Globals.get("Fonts")
 	languages = Globals.get("Languages")
 	dictionaries = Globals.get("Dictionaries")
@@ -99,7 +103,11 @@ func _ready():
 		load_game_data()
 		dictionary_id = load_data.dictionary
 		alphabet_id = load_data.alphabet
+		language = load_data.language
 		pass
+	
+	font_data = main.get_font_data(language)
+	
 	load_thread = Thread.new()
 	load_thread.start(self, "load_dictionary", 1)
 	#load_dictionary()
@@ -143,11 +151,11 @@ func add_columns():
 		pass
 	pass
 
-func init(_alphabet_id, _dictionary_id, _init_operation):
+func init(_language, _alphabet_id, _dictionary_id, _init_operation):
 	alphabet_id = _alphabet_id
 	dictionary_id = _dictionary_id
 	init_operation = _init_operation
-	
+	language = _language
 	#new_game()
 	
 	pass
@@ -224,7 +232,7 @@ func get_tile(requesting_column, data = null, tile_name = null):
 	#Tile.instance()
 	new_tile = tile_factory.get_node(tile_name).duplicate()
 	var letter = alphabet.get_random_letter()
-	new_tile.init(requesting_column, letter.letter, tile_status, letter.points)
+	new_tile.init(requesting_column, letter.letter, tile_status, letter.points, "Default", font_data)
 	tile_add_index += 1
 	return new_tile
 
@@ -310,7 +318,7 @@ func insert_bonus_tiles():
 		var tile_index = rand_range(0, tile_pool.size())
 		var old_tile = tile_pool[tile_index]
 		var new_tile = tile_factory.get_node(bonus_tile_to_insert).duplicate()
-		new_tile.init_from_tile(old_tile, "moving")
+		new_tile.init_from_tile(old_tile, "moving", font_data)
 		tile_pool.remove(tile_index)
 		old_tile.replace(new_tile)
 		pass
@@ -603,7 +611,7 @@ func level_up():
 
 func go_to_highscore():
 	var highScore = HighScoreScreen.instance()
-	highScore.init_from_score(dictionary.dictionary_settings.language, score, stats)
+	highScore.init_from_score(language, score, stats)
 	get_tree().get_root().add_child(highScore)
 	get_tree().change_scene_to(highScore)
 	queue_free();
@@ -636,6 +644,7 @@ func serialize():
 	var result = {}
 	result.dictionary = dictionary.dictionary_settings.id#name
 	result.alphabet = alphabet.alphabet_settings.id#name
+	result.language = language
 	result.stats = stats
 	result.level = level
 	result.score = score

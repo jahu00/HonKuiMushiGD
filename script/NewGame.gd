@@ -90,7 +90,7 @@ func _on_StartButton_pressed():
 	settings.last_dictionary = last_dictionary
 	settings.last_alphabet = last_alphabet
 	main.save_settings()
-	game.init(last_alphabet, last_dictionary, "new_game")
+	game.init(last_language, last_alphabet, last_dictionary, "new_game")
 	get_tree().get_root().add_child(game)
 	get_tree().change_scene_to(game)
 	pass

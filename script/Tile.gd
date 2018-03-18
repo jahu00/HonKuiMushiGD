@@ -57,15 +57,21 @@ func _ready():
 	set_fixed_process(true)
 	pass
 
-func init(_column, _letter, _status, _points, _starting_animation = "Default"):
+func init(_column, _letter, _status, _points, _starting_animation = "Default", _font_data = null):
 	column = _column
 	if (column != null):
 		game = column.game
 		pass
 	letter = _letter
-	get_node("Letter").set_text(letter.to_upper())
+	var letter_node = get_node("Letter")
+	letter_node.set_text(letter.to_upper())
 	status = _status
 	points = _points
+	
+	if (_font_data != null):
+		letter_node.get("custom_fonts/font").set_font_data(_font_data)
+		pass
+	
 	#speed = MaxSpeed#round(MaxSpeed * (1 + rand_range(-SpeedSpread,SpeedSpread)))
 	
 #	if (ShowPonits):
@@ -86,8 +92,8 @@ func init(_column, _letter, _status, _points, _starting_animation = "Default"):
 	#animation.play("Default")
 	pass
 
-func init_from_tile(_tile, _status):
-	init(_tile.column, _tile.letter, _status, _tile.points)
+func init_from_tile(_tile, _status, _font_data):
+	init(_tile.column, _tile.letter, _status, _tile.points, "Default", _font_data)
 	#moved to replace
 	#id = _tile.id
 	#set_pos(_tile.get_pos())

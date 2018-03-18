@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=1]
+
+[ext_resource path="res://style/Selected.tres" type="StyleBox" id=1]
+[ext_resource path="res://Style/GuiBackground.tres" type="StyleBox" id=2]
+[ext_resource path="res://font/montserrat/Montserrat-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://script/SelectedItemList.gd" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+
+font/size = 24
+font/use_mipmaps = false
+font/use_filter = true
+font/font = ExtResource( 3 )
+
+[node name="LanguageList" type="ItemList"]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 240.0
+margin/top = 220.0
+margin/right = 490.0
+margin/bottom = 600.0
+custom_styles/selected_focus = ExtResource( 1 )
+custom_styles/selected = ExtResource( 1 )
+custom_styles/bg = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+script/script = ExtResource( 4 )
+
+
