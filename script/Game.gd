@@ -69,7 +69,8 @@ var alphabets
 var settings
 var fonts
 
-var font_data
+var tile_font_data
+var word_font_data
 
 var load_data
 
@@ -106,7 +107,12 @@ func _ready():
 		language = load_data.language
 		pass
 	
-	font_data = main.get_font_data(language)
+	tile_font_data = main.get_font_data(language, "tile_font")
+	word_font_data = main.get_font_data(language, "word_font")
+	
+	#all tiles share the same font, so I only need to set tile font once
+	tile_factory.get_node("Tile/Letter").get("custom_fonts/font").set_font_data(tile_font_data)
+	word_block.get_node("WordLabel").get("custom_fonts/font").set_font_data(word_font_data)
 	
 	load_thread = Thread.new()
 	load_thread.start(self, "load_dictionary", 1)
@@ -232,7 +238,7 @@ func get_tile(requesting_column, data = null, tile_name = null):
 	#Tile.instance()
 	new_tile = tile_factory.get_node(tile_name).duplicate()
 	var letter = alphabet.get_random_letter()
-	new_tile.init(requesting_column, letter.letter, tile_status, letter.points, "Default", font_data)
+	new_tile.init(requesting_column, letter.letter, tile_status, letter.points, "Default")#, font_data)
 	tile_add_index += 1
 	return new_tile
 
@@ -318,7 +324,7 @@ func insert_bonus_tiles():
 		var tile_index = rand_range(0, tile_pool.size())
 		var old_tile = tile_pool[tile_index]
 		var new_tile = tile_factory.get_node(bonus_tile_to_insert).duplicate()
-		new_tile.init_from_tile(old_tile, "moving", font_data)
+		new_tile.init_from_tile(old_tile, "moving")#, font_data)
 		tile_pool.remove(tile_index)
 		old_tile.replace(new_tile)
 		pass
@@ -612,9 +618,7 @@ func level_up():
 func go_to_highscore():
 	var highScore = HighScoreScreen.instance()
 	highScore.init_from_score(language, score, stats)
-	get_tree().get_root().add_child(highScore)
-	get_tree().change_scene_to(highScore)
-	queue_free();
+	main.set_scene(highScore)
 	pass
 
 func finish_leveling_up():
@@ -678,18 +682,13 @@ func end_game():
 		pass
 	pass
 
-func go_to_menu():
-	get_tree().change_scene("res://Menu.tscn")
-	queue_free()
-	pass
 
 func _on_MenuButton_pressed():
 	if (can_select()):
 		save_game()
-		get_tree().change_scene("res://Menu.tscn")
-		queue_free()
+		main.set_scene_from_path("res://Menu.tscn")
 		pass
-	pass # replace with function body
+	pass
 
 func shuffle():
 	tile_add_index = 0

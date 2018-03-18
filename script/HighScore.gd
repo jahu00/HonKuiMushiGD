@@ -2,6 +2,8 @@ extends Node
 
 var UserDir
 
+var main
+
 var high_score_path = "user://highscore.json"
 
 var scores_by_language = {
@@ -54,6 +56,7 @@ func get_scores():
 	pass
 
 func _ready():
+	main = Globals.get("Main")
 	overlay = get_node("Overlay")
 	keyboard = get_node("Keyboard")
 	keyboard.init("", funcref(self, "enter_name_callback"))
@@ -78,7 +81,7 @@ func _ready():
 	pass
 
 func return_to_menu(dummy):
-	get_tree().change_scene("res://Menu.tscn")
+	main.set_scene_from_path("res://Menu.tscn")
 	pass
 
 func enter_name_callback(name):

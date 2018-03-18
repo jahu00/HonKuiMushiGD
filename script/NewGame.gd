@@ -78,7 +78,7 @@ func _on_LanguageList_item_selected(language):
 	pass
 
 func _on_MenuButton_pressed():
-	get_tree().change_scene("res://Menu.tscn")
+	main.set_scene_from_path("res://Menu.tscn")
 	pass
 
 func _on_StartButton_pressed():
@@ -91,6 +91,5 @@ func _on_StartButton_pressed():
 	settings.last_alphabet = last_alphabet
 	main.save_settings()
 	game.init(last_language, last_alphabet, last_dictionary, "new_game")
-	get_tree().get_root().add_child(game)
-	get_tree().change_scene_to(game)
+	main.set_scene(game)
 	pass

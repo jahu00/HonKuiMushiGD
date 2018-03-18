@@ -57,12 +57,6 @@ func _ready():
 			languages.append({ "name": language_name }, language_name)
 			pass
 		pass
-	#languages = Languages().new()
-	# Load internal alphabets
-	#languages.load_languages("res://language/", " (internal)")
-	#languages.load_languages("user://language/")
-	
-	#var test = load("res://script/Dictionary.gd").new("user://dictionary/Polish/pl_PL")
 	
 	load_settings()
 	
@@ -70,7 +64,23 @@ func _ready():
 	Globals.set("Languages", languages)
 	Globals.set("Settings", settings)
 	
-	#get_tree().change_scene("res://Game.tscn")
+	#go to menu
+	set_scene_from_path("res://Menu.tscn")
+	pass
+
+func set_scene(new_scene):
+	for child in get_children():
+		child.queue_free()
+		pass
+	add_child(new_scene)
+	pass
+
+func set_scene_from_path(new_scene_path):
+	for child in get_children():
+		child.queue_free()
+		pass
+	var new_scene = load(new_scene_path).instance()
+	add_child(new_scene)
 	pass
 
 func setup_directories():
@@ -93,20 +103,19 @@ func setup_directories():
 	
 	pass
 
-#func load_assets():
-#	fonts = Table.new();
-#	languages = Table.new();
-#	
-#	pass
-
-func get_font_data(language):
+func get_font_data(language, font_type):
 	var font_data = DynamicFontData.new()
 	var path = ""
-	if (settings.fonts.has(language) && fonts.index.has(settings.fonts[language])):
-		path = fonts.index[settings.fonts[language]].path
+	if (settings.fonts.has(language) && settings.fonts[language].has(font_type) && fonts.index.has(settings.fonts[language][font_type])):
+		path = fonts.index[settings.fonts[language][font_type]].path
 		pass
 	else:
-		path = fonts.array[0].path
+		if (font_type == "tile_font"):
+			path = fonts.default_font_1.path
+			pass
+		if (font_type == "word_font"):
+			path = fonts.default_font_2.path
+			pass
 		pass
 	font_data.set_font_path(path)
 	return font_data

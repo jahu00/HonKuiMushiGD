@@ -92,7 +92,7 @@ func init(_column, _letter, _status, _points, _starting_animation = "Default", _
 	#animation.play("Default")
 	pass
 
-func init_from_tile(_tile, _status, _font_data):
+func init_from_tile(_tile, _status, _font_data = null):
 	init(_tile.column, _tile.letter, _status, _tile.points, "Default", _font_data)
 	#moved to replace
 	#id = _tile.id
