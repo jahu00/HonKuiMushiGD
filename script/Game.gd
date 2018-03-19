@@ -599,8 +599,7 @@ func update_level():
 
 func show_level_up_popup(text):
 	var popup = LevelUp.instance()
-	#popup.init(self, level, stats)
-	popup.init(self, text, stats)
+	popup.init(self, text, stats, language)
 	add_child(popup)
 	pass
 

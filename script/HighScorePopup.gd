@@ -4,27 +4,40 @@ var hiding = false
 var showing = true
 
 var animation
+var best_word_label
+var longest_word_label
 var high_score_container
 
-#var level
 var title
 var stats
-#var game
+var language
 
-var tile_size
+var main
+
+var font
+var font_data
 
 var HighScoreRow = preload("res://HighScoreRow.tscn")
 
 func _ready():
+	main = Globals.get("Main")
 	animation = get_node("AnimationPlayer")
 	animation.play("Default")
 	high_score_container = get_node("Popup/HighScoreContainer")
-	
+	font_data = main.get_font_data(language, "word_font")
+	font = DynamicFont.new()
+	font.set_size(32)
+	font.set_use_filter(true)
+	font.set_font_data(font_data)
 	get_node("Popup/TitleLabel").set_text_and_adjust_size(title.to_upper())
-	get_node("Popup/BestWordLabel").set_text_and_adjust_size(stats.best_word.word.to_upper())
+	best_word_label = get_node("Popup/BestWordLabel")
+	best_word_label.set("custom_fonts/font", font)
+	best_word_label.set_text_and_adjust_size(stats.best_word.word.to_upper())
 	get_node("Popup/BestWordScoreLabel").set_score(stats.best_word.points)
 	get_node("Popup/BestWordNameLabel").set_text_and_adjust_size(stats.best_word.name)
-	get_node("Popup/LongestWordLabel").set_text_and_adjust_size(stats.longest_word.word.to_upper())
+	longest_word_label = get_node("Popup/LongestWordLabel")
+	longest_word_label.set("custom_fonts/font", font)
+	longest_word_label.set_text_and_adjust_size(stats.longest_word.word.to_upper())
 	get_node("Popup/LongestWordScoreLabel").set_text_and_adjust_size(str(stats.longest_word.word.length()) + " LETTERS")
 	get_node("Popup/LongestWordNameLabel").set_text_and_adjust_size(stats.longest_word.name)
 	populate_high_score()
@@ -45,11 +58,12 @@ func populate_high_score():
 
 
 #func init(_game, _level, _stats):
-func init(_title, _stats):
+func init(_title, _stats, _language):
 	#game = _game
 	#level = _level
 	title = _title
 	stats = _stats
+	language = _language
 	pass
 
 func a_hide():

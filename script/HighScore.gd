@@ -151,7 +151,7 @@ func set_language(_language):
 		var scores = get_scores()
 		if (scores.has(language)):
 			popup = HighScorePopup.instance()
-			popup.init(language, scores[language])
+			popup.init(language, scores[language], language)
 			add_child(popup)
 			pass
 		pass
