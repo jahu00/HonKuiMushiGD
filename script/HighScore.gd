@@ -161,7 +161,7 @@ func load_score():
 	var user_dir = get_user_dir()
 	if (user_dir.file_exists(high_score_path)):
 		var f = File.new()
-		f.open(high_score_path, File.READ)
+		f.open_encrypted_with_pass(high_score_path, File.READ, main.encryption_password)
 		var json_str  = f.get_as_text()
 		scores_by_language = {}
 		scores_by_language.parse_json(json_str)
@@ -172,7 +172,7 @@ func load_score():
 
 func save_score():
 	var f = File.new()
-	f.open(high_score_path, File.WRITE)
+	f.open_encrypted_with_pass(high_score_path, File.WRITE, main.encryption_password)
 	f.store_string(scores_by_language.to_json())
 	f.close()
 	pass

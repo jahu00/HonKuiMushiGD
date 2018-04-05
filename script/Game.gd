@@ -191,7 +191,7 @@ func new_game():
 
 func load_game_data():
 	var f = File.new()
-	f.open(save_game_path, File.READ)
+	f.open_encrypted_with_pass(save_game_path, File.READ, main.encryption_password)
 	var json_str  = f.get_as_text()
 	load_data = {}
 	load_data.parse_json(json_str)
@@ -387,8 +387,11 @@ func update_word():
 		word += tile.letter.to_lower()
 		pass
 	
+	word = alphabet.convert_word(word)
+	
 	var lookup_result = []
-	if (word != "" && word.length() > 2):
+	#if (word != "" && word.length() > 2):
+	if (word != "" && selected_tiles.size() > 2):
 		var time_before = OS.get_ticks_msec()
 		lookup_result = dictionary.lookup(word, true)
 		var total_time = OS.get_ticks_msec() - time_before
@@ -488,8 +491,10 @@ func clear_bonus_tiles():
 	pass
 
 func submit_word():
-	flame_chance = compute_flame_chance(word)
-	if (word.length() > stats.longest_word.length()):
+	#flame_chance = compute_flame_chance(word)
+	var word_length = selected_tiles.size()
+	flame_chance = compute_flame_chance(word_length)
+	if (word_length > stats.longest_word.length()):
 		stats.longest_word = word;
 		pass
 	#word = ""
@@ -501,30 +506,30 @@ func submit_word():
 		stats.best_word.points = points_to_add
 		pass
 	score += points_to_add
-	if (!stats.word_stats.has(word.length())):
-		stats.word_stats[word.length()] = 1
+	if (!stats.word_stats.has(word_length)):
+		stats.word_stats[word_length] = 1
 		pass
 	else:
-		stats.word_stats[word.length()] += 1
+		stats.word_stats[word_length] += 1
 		pass
 	
 	var bonus_tiles_to_add = []
 	clear_bonus_tiles()
-	if (word.length() >= 8 || word.length() > 3 && stats.word_stats[word.length()] % (8 - word.length()) == 0):
+	if (word_length >= 8 || word_length > 3 && stats.word_stats[word_length] % (8 - word_length) == 0):
 			bonus_tiles_to_add.append("Green")
 			pass
 	
-	if (word.length() < 7 && word.length() > 4 && stats.word_stats[word.length()] % (8 - word.length()) == 1):
+	if (word_length < 7 && word_length > 4 && stats.word_stats[word_length] % (8 - word_length) == 1):
 			bonus_tiles_to_insert.append("Gold")
 			pass
 	
-	if (word.length() >= 8 || word.length() > 6 && stats.word_stats[word.length()] % (8 - word.length()) == 1):
+	if (word_length >= 8 || word_length > 6 && stats.word_stats[word_length] % (8 - word_length) == 1):
 			bonus_tiles_to_insert.append("Dimond")
 			pass
 	
 	if (bonus_tiles_to_add.size() > 0):
 		var tile_index = []
-		for i in range(0, word.length()):
+		for i in range(0, selected_tiles.size()):
 			tile_index.append(i)
 			pass
 		for bonus_tile_to_add in bonus_tiles_to_add:
@@ -570,8 +575,8 @@ func submit_word():
 	fill_playfield("post_submit_fill")
 	pass
 
-func compute_flame_chance(word):
-	var result = (19.0 + level) / pow(10, word.length() - 1)
+func compute_flame_chance(word_length):
+	var result = (19.0 + level) / pow(10, word_length - 1)
 	if (result > 1):
 		result = 1
 		pass
@@ -634,7 +639,7 @@ func finish_leveling_up():
 
 func game_over():
 	game_over = true
-	print("GAME OVER")
+	#print("GAME OVER")
 	pass
 
 func _on_SubmitButton_pressed():
@@ -670,7 +675,7 @@ func serialize():
 
 func save_game():
 	var f = File.new()
-	f.open(save_game_path, File.WRITE)
+	f.open_encrypted_with_pass(save_game_path, File.WRITE, main.encryption_password)
 	f.store_string(serialize().to_json())
 	f.close()
 	pass

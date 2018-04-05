@@ -212,6 +212,7 @@ offset = Vector2( 128.584, 32 )
 
 [node name="WordBlock" type="Node2D" parent="SideBar"]
 
+editor/display_folded = true
 visibility/visible = false
 visibility/opacity = 0.0
 transform/pos = Vector2( 189, 114 )
@@ -225,9 +226,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = -219.0
-margin/top = -34.0
+margin/top = -36.0
 margin/right = 220.0
-margin/bottom = 26.0
+margin/bottom = 24.0
 custom_fonts/font = SubResource( 1 )
 text = "AAA"
 align = 1
@@ -247,9 +248,9 @@ focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
 margin/left = -219.0
-margin/top = 6.0
+margin/top = 7.0
 margin/right = 221.0
-margin/bottom = 40.0
+margin/bottom = 41.0
 custom_fonts/font = SubResource( 2 )
 text = "100"
 align = 1

@@ -1,5 +1,7 @@
 extends Node
 
+var encryption_password = "1111"
+
 var tile_size = 120
 
 var settings = {}

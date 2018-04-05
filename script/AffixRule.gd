@@ -6,7 +6,7 @@ var name
 
 func _init(rule_definition):
 	var regex = RegEx.new()
-	regex.compile("^(SFX|PFX)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*)$")
+	regex.compile("^(SFX|PFX)\\s+(.*?)\\s+(.*?)\\s+(.*?)\\s+(.*?)(?:\\s*#.*)?$")
 	regex.find(rule_definition)
 	type = regex.get_capture(1)
 	name = regex.get_capture(2)
