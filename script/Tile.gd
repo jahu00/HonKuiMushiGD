@@ -185,7 +185,7 @@ func burn():
 
 func _on_Tile_input_event( viewport, event, shape_idx ):
 	if (event.type == InputEvent.MOUSE_BUTTON):
-		if (event.is_pressed()):
+		if (event.is_pressed() && !ignore):
 			if (!clicked):
 				if (game.can_select()):
 					game.try_select_tile(self)

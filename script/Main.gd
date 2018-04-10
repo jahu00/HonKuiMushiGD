@@ -86,7 +86,7 @@ func set_scene_from_path(new_scene_path):
 	pass
 
 func setup_directories():
-	user_dir.open("user://")
+	#user_dir.open("user://")
 	if (!user_dir.dir_exists("dictionary")):
 		user_dir.make_dir("dictionary")
 		pass
@@ -105,11 +105,41 @@ func setup_directories():
 	
 	pass
 
+func get_fonts_for_language(language):
+	var file_name = "user://language_settings/" + language + ".json"
+	if (user_dir.file_exists(file_name)):
+		var f = File.new()
+		var result = {}
+		f.open(file_name, File.READ)
+		var json_str  = f.get_as_text()
+		result.parse_json(json_str)
+		f.close()
+		if (result.has("fonts")):
+			return result.fonts
+			pass
+		pass
+	return {
+		"tile_font": fonts.default_font_1.name, "word_font": fonts.default_font_2.name
+	}
+	pass
+
+func set_fonts_for_language(language, language_fonts):
+	var file_name = "user://language_settings/" + language + ".json"
+	var language_settings = {
+		"fonts": language_fonts
+	}
+	var f = File.new()
+	f.open(file_name, File.WRITE)
+	f.store_string(language_settings.to_json())
+	f.close()
+	pass
+
 func get_font_data(language, font_type):
 	var font_data = DynamicFontData.new()
 	var path = ""
-	if (settings.fonts.has(language) && settings.fonts[language].has(font_type) && fonts.index.has(settings.fonts[language][font_type])):
-		path = fonts.index[settings.fonts[language][font_type]].path
+	var language_fonts = get_fonts_for_language(language)
+	if (language_fonts.has(font_type) && fonts.index.has(language_fonts[font_type])):
+		path = fonts.index[language_fonts[font_type]].path
 		pass
 	else:
 		if (font_type == "tile_font"):

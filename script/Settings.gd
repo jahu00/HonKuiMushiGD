@@ -8,6 +8,7 @@ var main
 var language_list
 var tile_font_list
 var word_font_list
+var language_fonts
 
 func _ready():
 	main = Globals.get("Main")
@@ -39,15 +40,16 @@ func populate_fonts():
 	pass
 
 func _on_LanguageList_item_selected(language):
-	if (settings.fonts.has(language) && settings.fonts[language].has("tile_font") && tile_font_list.has_value(settings.fonts[language].tile_font)):
-		tile_font_list.select_value(settings.fonts[language].tile_font)
+	language_fonts = main.get_fonts_for_language(language)
+	if (language_fonts.has("tile_font") && tile_font_list.has_value(language_fonts.tile_font)):
+		tile_font_list.select_value(language_fonts.tile_font)
 		pass
 	else:
 		tile_font_list.select_value(fonts.default_font_1.name)
 		pass
 	
-	if (settings.fonts.has(language) && settings.fonts[language].has("word_font") && word_font_list.has_value(settings.fonts[language].word_font)):
-		word_font_list.select_value(settings.fonts[language].word_font)
+	if (language_fonts.has("word_font") && word_font_list.has_value(language_fonts.word_font)):
+		word_font_list.select_value(language_fonts.word_font)
 		pass
 	else:
 		word_font_list.select_value(fonts.default_font_2.name)
@@ -55,22 +57,31 @@ func _on_LanguageList_item_selected(language):
 	pass
 
 func _on_TileFontList_item_selected(font):
-	var language = language_list.get_selected_value()
-	if (!settings.fonts.has(language)):
-		settings.fonts[language] = {}
-		pass
-	settings.fonts[language].tile_font = font
+	#var language = language_list.get_selected_value()
+	#if (!settings.fonts.has(language)):
+	#	settings.fonts[language] = {}
+	#	pass
+	#settings.fonts[language].tile_font = font
+	language_fonts.tile_font = font
+	save_font_settings()
 	pass
 
 func _on_WordFontList_item_selected(font):
+	#var language = language_list.get_selected_value()
+	#if (!settings.fonts.has(language)):
+	#	settings.fonts[language] = {}
+	#	pass
+	#settings.fonts[language].word_font = font
+	language_fonts.word_font = font
+	save_font_settings()
+	pass
+
+func save_font_settings():
 	var language = language_list.get_selected_value()
-	if (!settings.fonts.has(language)):
-		settings.fonts[language] = {}
-		pass
-	settings.fonts[language].word_font = font
+	main.set_fonts_for_language(language, language_fonts)
 	pass
 
 func _on_SaveButton_pressed():
-	main.save_settings()
+	#main.save_settings()
 	main.set_scene_from_path("res://Menu.tscn")
 	pass
