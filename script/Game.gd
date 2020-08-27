@@ -474,15 +474,23 @@ func try_select_tile(tile):
 		pass
 	
 	# if the tile is not adjecent to the last one, deselect all tiles and select this one
+	deselect_all_tiles()
+	
+	tile.select()
+	selected_tiles.append(tile)
+	#update_word()
+	pass
+
+func deselect_all_tiles():
+	if (selected_tiles.size() == 0):
+		return
+		pass
+	
 	for i in range(0, selected_tiles.size()):
 		selected_tiles[0].deselect()
 		selected_tiles.remove(0)
 		#update_word()
 		pass
-	
-	tile.select()
-	selected_tiles.append(tile)
-	#update_word()
 	pass
 
 func clear_bonus_tiles():
@@ -696,6 +704,8 @@ func _on_MenuButton_pressed():
 
 func shuffle():
 	tile_add_index = 0
+	deselect_all_tiles()
+	update_word()
 	clear_bonus_tiles()
 	var flame_tile_column = -1
 	var flame_column_index = []

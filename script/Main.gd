@@ -86,23 +86,19 @@ func set_scene_from_path(new_scene_path):
 	pass
 
 func setup_directories():
-	#user_dir.open("user://")
-	if (!user_dir.dir_exists("dictionary")):
-		user_dir.make_dir("dictionary")
-		pass
 	
-	if (!user_dir.dir_exists("alphabet")):
-		user_dir.make_dir("alphabet")
-		pass
+	create_directory_if_doesnt_exist("dictionary")
+	create_directory_if_doesnt_exist("alphabet")
+	create_directory_if_doesnt_exist("language")
+	create_directory_if_doesnt_exist("language_settings")
+	create_directory_if_doesnt_exist("font")
 	
-	if (!user_dir.dir_exists("language")):
-		user_dir.make_dir("language")
+	pass
+
+func create_directory_if_doesnt_exist(name):
+	if (!user_dir.dir_exists(name)):
+		user_dir.make_dir(name)
 		pass
-	
-	if (!user_dir.dir_exists("font")):
-		user_dir.make_dir("font")
-		pass
-	
 	pass
 
 func get_fonts_for_language(language):
